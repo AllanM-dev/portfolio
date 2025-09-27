@@ -1,0 +1,58 @@
+# Fichiers et dossiers de build
+bin/
+obj/
+out/
+
+# Fichiers de logs
+*.log
+
+# Fichiers de configuration utilisateur
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Fichiers de test et de couverture
+TestResults/
+*.coverage
+*.coveragexml
+
+# Fichiers de publication
+publish/
+*.pubxml
+*.pfx
+
+# Paquets NuGet
+*.nupkg
+# Dossier de packages NuGet (si utilisé localement)
+packages/
+# Dossier de cache global NuGet
+.nuget/
+
+# Fichiers de configuration secrets
+secrets.json
+
+# Fichiers de base de données locales
+*.db
+*.mdf
+*.ldf
+
+# Dossiers de configuration Visual Studio
+.vs/
+.vscode/
+
+# Fichiers temporaires
+*.tmp
+*.temp
+
+# Fichiers de dépendances JetBrains Rider
+.idea/
+
+# Fichiers de dépendances Mac
+*.DS_Store
+
+# Fichiers de dépendances Linux
+*.swp
+
+# Fichiers générés par le système
+Thumbs.db
