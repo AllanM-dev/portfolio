@@ -39,6 +39,9 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();
 
-public partial class Program { } // Pour les tests d'intégration
+public partial class Program
+{
+    protected Program() { }
+} // Pour les tests d'intégration

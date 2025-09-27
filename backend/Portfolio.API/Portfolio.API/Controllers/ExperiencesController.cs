@@ -7,7 +7,7 @@ namespace Portfolio.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ExperiencesController : Controller
+    public class ExperiencesController : ControllerBase
     {
         private readonly GetExperiences _getExperiences;
         private readonly GetExperienceById _getExperienceById;
@@ -46,6 +46,8 @@ namespace Portfolio.API.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType<ExperienceDto>(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult Create([FromBody] CreateExperienceDto dto)
         {
             if (!ModelState.IsValid)
