@@ -63,6 +63,6 @@ jobs:
           cd backend/Portfolio.API
           ${{ runner.temp }}\scanner\dotnet-sonarscanner begin /k:"AllanM-dev_portfolio" /o:"allanm-dev" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="coverage-report/Cobertura.xml"
           dotnet build --configuration Release
-          dotnet test backend/Portfolio.Tests/Portfolio.Tests.csproj --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory TestResults
+          dotnet test backend/Portfolio.Test/Portfolio.Test.csproj --no-build --verbosity normal --collect:"XPlat Code Coverage" --results-directory TestResults
           reportgenerator "-reports:TestResults/**/coverage.cobertura.xml" "-targetdir:coverage-report" -reporttypes:Cobertura
           ${{ runner.temp }}\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
