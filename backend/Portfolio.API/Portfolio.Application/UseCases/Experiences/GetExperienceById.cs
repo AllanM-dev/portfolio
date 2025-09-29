@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Portfolio.Application.UseCases
+namespace Portfolio.Application.UseCases.Experiences
 {
     public class GetExperienceById
     {

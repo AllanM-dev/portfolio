@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Portfolio.Application.DTOs.Experiences;
-using Portfolio.Application.UseCases;
+using Portfolio.Application.UseCases.Experiences;
 
 namespace Portfolio.API.Controllers
 {

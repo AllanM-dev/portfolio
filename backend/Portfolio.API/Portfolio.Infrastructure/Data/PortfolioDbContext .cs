@@ -14,5 +14,18 @@ namespace Portfolio.Infrastructure.Data
         {
         }
         public DbSet<Experience> Experiences { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<VersionCV> VersionsCV { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<VersionCV>()
+                .HasOne(v => v.User)
+                .WithMany(u => u.VersionCVs)
+                .HasForeignKey(u => u.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        }
     }
 }

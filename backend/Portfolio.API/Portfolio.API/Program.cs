@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Sqlite;
-using Portfolio.Application.UseCases;
+using Portfolio.Application.UseCases.Experiences;
+using Portfolio.Application.UseCases.Users;
+using Portfolio.Application.UseCases.VersionCVs;
 using Portfolio.Domain.Interfaces;
 using Portfolio.Infrastructure.Data;
 using Portfolio.Infrastructure.Repositories;
@@ -16,6 +18,12 @@ builder.Services.AddSwaggerGen();
 
 // Injection de dépendances
 builder.Services.AddScoped<IExperienceRepository, ExperienceRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IVersionCVRepository, VersionCVRepository>();
+builder.Services.AddScoped<AddUser>();
+builder.Services.AddScoped<GetUsers>();
+builder.Services.AddScoped<AddVersionCV>();
+builder.Services.AddScoped<GetVersionsByUser>();
 builder.Services.AddScoped<GetExperiences>();
 builder.Services.AddScoped<GetExperienceById>();
 builder.Services.AddScoped<AddExperience>();
