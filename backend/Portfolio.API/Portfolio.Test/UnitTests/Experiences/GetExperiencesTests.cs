@@ -1,5 +1,5 @@
 ﻿using Moq;
-using Portfolio.Application.UseCases;
+using Portfolio.Application.UseCases.Experiences;
 using Portfolio.Domain.Entities;
 using Portfolio.Domain.Interfaces;
 
@@ -12,8 +12,8 @@ namespace Portfolio.Test.UnitTests.Experiences
         {
             var experiences = new List<Experience>
             {
-                new Experience {Id = 1, Title = "Old Job", StartDate = new DateTime(2022, 1, 1)},
-                new Experience {Id = 2, Title = "New Job", StartDate = new DateTime(2024, 1, 1)},
+                new Experience {Id = 1, Title = "Old Job", Company = "Sopra", StartDate = new DateTime(2022, 1, 1)},
+                new Experience {Id = 2, Title = "New Job", Company = "Nexton", StartDate = new DateTime(2024, 1, 1)},
             };
 
             var repositoryMock = new Mock<IExperienceRepository>();
