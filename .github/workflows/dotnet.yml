@@ -64,9 +64,8 @@ jobs:
             # Begin Sonar
             ${{ runner.temp }}\scanner\dotnet-sonarscanner begin /k:"AllanM-dev_portfolio" /o:"allanm-dev" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:"sonar.verbose=true" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
             # Build
-            dotnet restore Portfolio.API.sln
-            dotnet build Portfolio.API.sln --no-restore --configuration Release
+            dotnet build Portfolio.API\Portfolio.API\Portfolio.API.csproj --configuration Release
             # Test + Coverage
-            dotnet test Portfolio.API\Portfolio.Test\Portfolio.Test.csproj --no-restore --configuration Release --collect:"XPlat Code Coverage;Format=opencover"
+            dotnet test Portfolio.API\Portfolio.Test\Portfolio.Test.csproj --configuration Release --collect:"XPlat Code Coverage;Format=opencover"
             # End Sonar
             ${{ runner.temp }}\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
