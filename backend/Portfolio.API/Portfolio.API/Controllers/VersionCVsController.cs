@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Portfolio.Application.DTOs.VersionCvs;
+using Portfolio.Application.UseCases.Users;
 using Portfolio.Application.UseCases.VersionCVs;
 
 namespace Portfolio.API.Controllers
@@ -11,6 +12,7 @@ namespace Portfolio.API.Controllers
     {
         private readonly AddVersionCV _addVersionCV;
         private readonly GetVersionsByUser _getVersionsByUser;
+        private readonly GetVersionCVById _getVersionById;
 
         public VersionCVsController(AddVersionCV addVersionCV, GetVersionsByUser getVersionsByUser)
         {
@@ -34,7 +36,16 @@ namespace Portfolio.API.Controllers
                 return BadRequest(ModelState);
             var createdVersion = dto.ToEntity();
             _addVersionCV.Execute(createdVersion);
-            return CreatedAtAction(nameof(GetByUser), new { userId = createdVersion.UserId }, createdVersion.ToDto());
+            return CreatedAtAction(nameof(GetById), new { userId = createdVersion.UserId }, createdVersion.ToDto());
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<VersionCVDto> GetById(int id)
+        {
+            var version = _getVersionById.Execute(id);
+            if (version == null)
+                return NotFound();
+            return Ok(version.ToDto());
         }
     }
 }

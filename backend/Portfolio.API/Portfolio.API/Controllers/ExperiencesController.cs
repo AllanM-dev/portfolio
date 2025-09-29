@@ -12,8 +12,6 @@ namespace Portfolio.API.Controllers
         private readonly GetExperiences _getExperiences;
         private readonly GetExperienceById _getExperienceById;
         private readonly AddExperience _addExperience;
-        private readonly UpdateExperience _updateExperience;
-        private readonly DeleteExperience _deleteExperience;
 
         public ExperiencesController(
             GetExperiences getExperiences,
@@ -25,8 +23,6 @@ namespace Portfolio.API.Controllers
             _getExperiences = getExperiences;
             _getExperienceById = getExperienceById;
             _addExperience = addExperience;
-            _updateExperience = updateExperience;
-            _deleteExperience = deleteExperience;
         }
 
         [HttpGet]
