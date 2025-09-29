@@ -53,6 +53,15 @@ jobs:
         run: |
           New-Item -Path ${{ runner.temp }}\scanner -ItemType Directory
           dotnet tool update dotnet-sonarscanner --tool-path ${{ runner.temp }}\scanner
+          
+      # Install ReportGenerator
+      - name: Install ReportGenerator
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
+      # Ensure global tools are on PATH
+      - name: Add .NET tools to PATH
+        shell: powershell
+        run: $env:PATH += ";$env:USERPROFILE\.dotnet\tools"
 
       # Analyse Sonar + Build + Tests
       - name: Build and Analyze
