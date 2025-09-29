@@ -69,12 +69,14 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
         run: |
-           cd backend
-           # Begin Sonar
-           ${{ runner.temp }}\scanner\dotnet-sonarscanner begin /k:"AllanM-dev_portfolio" /o:"allanm-dev" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="coverage/coverage.opencover.xml"
-           # Build
-           dotnet build Portfolio.sln --configuration Release
-           # Test + Coverage
-           dotnet test Portfolio.API\Portfolio.Test\Portfolio.Test.csproj --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=coverage/
-           # End Sonar
-           ${{ runner.temp }}\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
+            cd backend
+            # Créer le dossier coverage
+            New-Item -ItemType Directory -Path coverage
+            # Begin Sonar
+            ${{ runner.temp }}\scanner\dotnet-sonarscanner begin /k:"AllanM-dev_portfolio" /o:"allanm-dev" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="coverage/*.opencover.xml"
+            # Build
+            dotnet build Portfolio.sln --configuration Release
+            # Test + Coverage
+            dotnet test Portfolio.API\Portfolio.Test\Portfolio.Test.csproj --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=coverage/
+            # End Sonar
+            ${{ runner.temp }}\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
