@@ -70,8 +70,11 @@ jobs:
         shell: powershell
         run: |
            cd backend
-           ${{ runner.temp }}\scanner\dotnet-sonarscanner begin /k:"AllanM-dev_portfolio" /o:"allanm-dev" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
+           # Begin Sonar
+           ${{ runner.temp }}\scanner\dotnet-sonarscanner begin /k:"AllanM-dev_portfolio" /o:"allanm-dev" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.cs.opencover.reportsPaths="coverage/coverage.opencover.xml"
+           # Build
            dotnet build Portfolio.sln --configuration Release
-           dotnet test Portfolio.API\Portfolio.Test\Portfolio.Test.csproj --configuration Release --verbosity normal
-           dotnet-coverage collect 'dotnet test' -f xml  -o 'coverage.xml'
+           # Test + Coverage
+           dotnet test Portfolio.API\Portfolio.Test\Portfolio.Test.csproj --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=coverage/
+           # End Sonar
            ${{ runner.temp }}\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
