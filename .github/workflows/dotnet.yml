@@ -77,6 +77,6 @@ jobs:
             # Build
             dotnet build Portfolio.sln --configuration Release
             # Test + Coverage
-            dotnet test Portfolio.API\Portfolio.Test\Portfolio.Test.csproj --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=coverage/
+            dotnet test Portfolio.API\Portfolio.Test\Portfolio.Test.csproj --configuration Release /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=coverage/coverage.opencover.xml
             # End Sonar
             ${{ runner.temp }}\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
