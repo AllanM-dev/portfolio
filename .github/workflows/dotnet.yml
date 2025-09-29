@@ -56,7 +56,7 @@ jobs:
           
       # Install ReportGenerator
       - name: Install ReportGenerator
-        run: dotnet tool install --global dotnet-reportgenerator-globaltool
+        run: dotnet tool install --global dotnet-coverage
 
       # Ensure global tools are on PATH
       - name: Add .NET tools to PATH
