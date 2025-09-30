@@ -66,6 +66,6 @@ jobs:
             # Build
             dotnet build Portfolio.API\Portfolio.API\Portfolio.API.csproj --configuration Release
             # Test + Coverage
-            dotnet test Portfolio.API\Portfolio.Test\Portfolio.Test.csproj --configuration Release --collect:"XPlat Code Coverage;Format=opencover"
+            dotnet test Portfolio.API\Portfolio.Test\Portfolio.Test.csproj --configuration Release --collect:"XPlat Code Coverage;Format=opencover;ExcludeByFile=**\Migrations\*.cs"
             # End Sonar
             ${{ runner.temp }}\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
