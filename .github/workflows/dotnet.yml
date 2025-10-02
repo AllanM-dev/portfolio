@@ -67,5 +67,6 @@ jobs:
             dotnet build Portfolio.API\Portfolio.API\Portfolio.API.csproj --configuration Release
             # Test + Coverage
             dotnet test Portfolio.API\Portfolio.Test\Portfolio.Test.csproj --configuration Release --collect:"XPlat Code Coverage" --settings coverlet.runsettings
+            Get-ChildItem -Recurse -Filter "coverage.opencover.xml"
             # End Sonar
             ${{ runner.temp }}\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"
