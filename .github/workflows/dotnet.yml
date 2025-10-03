@@ -62,12 +62,10 @@ jobs:
         run: |
             cd backend
             # Begin Sonar
-            ${{ runner.temp }}\scanner\dotnet-sonarscanner begin /k:"AllanM-dev_portfolio" /o:"allanm-dev" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:"sonar.verbose=true" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
+            ${{ runner.temp }}\scanner\dotnet-sonarscanner begin /k:"AllanM-dev_portfolio" /o:"allanm-dev" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.coverage.exclusions="**/Migrations/*.cs" /d:"sonar.verbose=true" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
             # Build
             dotnet build Portfolio.API\Portfolio.API\Portfolio.API.csproj --configuration Release
             # Test + Coverage
             dotnet test Portfolio.API\Portfolio.Test\Portfolio.Test.csproj --configuration Release --collect:"XPlat Code Coverage;Format=opencover" --settings coverlet.runsettings
-            Write-Output "+++++++++++++++++++++++++++++++++++++++"
-            Get-ChildItem -Recurse -Filter "coverage.opencover.xml"
             # End Sonar
             ${{ runner.temp }}\scanner\dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"

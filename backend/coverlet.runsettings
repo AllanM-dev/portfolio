@@ -6,7 +6,6 @@
         <Configuration>
           <Format>opencover</Format>
 		  <CoverletOutput>../TestResults/coverage.opencover.xml</CoverletOutput>
-          <ExcludeByFile>**/*.cs</ExcludeByFile>
           <SkipAutoProps>true</SkipAutoProps>
         </Configuration>
       </DataCollector>
