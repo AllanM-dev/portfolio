@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Testing;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Portfolio.Application.DTOs.Experiences;
 using Portfolio.Domain.Entities;
@@ -17,6 +18,7 @@ namespace Portfolio.Test.IntegrationTests
     {
         private readonly HttpClient _client;
         private readonly PortfolioDbContext _db;
+        private int _experienceId;
 
         public ExperiencesControllerTests(WebApplicationFactory<Program> factory)
         {
@@ -36,25 +38,17 @@ namespace Portfolio.Test.IntegrationTests
                     db.Experiences.RemoveRange(db.Experiences);
                     db.SaveChanges();
 
-                    db.Experiences.AddRange(new List<Experience>
+                    var created = db.Experiences.Add(new Experience
                     {
-                        new Experience
-                        {
-                            Title = "Software Engineer",
-                            Company = "Tech Corp",
-                            StartDate = new DateTime(2020, 1, 1),
-                            EndDate = null,
-                            Description = "Developed web applications using .NET Core and React."
-                        },
-                        new Experience
-                        {
-                            Title = "Junior Developer",
-                            Company = "Web Solutions",
-                            StartDate = new DateTime(2018, 6, 1),
-                            EndDate = new DateTime(2019, 12, 31),
-                            Description = "Assisted in the development of client websites and applications."
-                        }
-                    });
+                        Title = "Software Engineer",
+                        Company = "Tech Corp",
+                        StartDate = new DateTime(2020, 1, 1),
+                        Description = "Developed web applications using .NET Core and React.",
+                        Skills = new List<string>()
+                    }).Entity;
+                    db.SaveChanges();
+
+                    _experienceId = created.Id;
                 });
             }).CreateClient();
         }
@@ -74,7 +68,7 @@ namespace Portfolio.Test.IntegrationTests
         [Fact]
         public async Task GetExperienceById_ExistingId_ShouldReturnOk()
         {
-            var response = await _client.GetAsync("/api/experiences/1");
+            var response = await _client.GetAsync($"/api/experiences/{_experienceId}");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 

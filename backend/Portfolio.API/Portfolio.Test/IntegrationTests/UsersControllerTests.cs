@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Portfolio.Application.DTOs.Users;
 using Portfolio.Domain.Entities;
@@ -17,36 +18,48 @@ namespace Portfolio.Test.IntegrationTests
     public class UsersControllerTests: IClassFixture<WebApplicationFactory<Program>>
     {
         private readonly HttpClient _client;
-        private readonly PortfolioDbContext _db;
+        private readonly Guid _userId;
+        private readonly string _dbPath;
 
         public UsersControllerTests(WebApplicationFactory<Program> factory)
         {
-            var scopeFactory = factory.Services.GetService<IServiceScopeFactory>()!;
-            using var scope = scopeFactory.CreateScope();
-            _db = scope.ServiceProvider.GetRequiredService<PortfolioDbContext>();
+            // 🔹 Crée une base SQLite temporaire unique pour ce test
+            _dbPath = Path.Combine(Path.GetTempPath(), $"portfolio_users_test_{Guid.NewGuid()}.db");
 
-            // Prépare un client avec DB initialisée et seedée
+            Guid seededUserId = Guid.NewGuid();
+
+            // 🔹 Crée un client avec un environnement de test configuré
             _client = factory.WithWebHostBuilder(builder =>
             {
                 builder.ConfigureServices(services =>
                 {
-                    using var scope = services.BuildServiceProvider().CreateScope();
+                    // 1️⃣ Supprimer l’enregistrement d’origine du DbContext
+                    var descriptor = services.SingleOrDefault(
+                        d => d.ServiceType == typeof(DbContextOptions<PortfolioDbContext>));
+                    if (descriptor != null)
+                        services.Remove(descriptor);
+
+                    // 2️⃣ Ajouter une nouvelle instance du DbContext pointant vers le fichier SQLite temporaire
+                    services.AddDbContext<PortfolioDbContext>(options =>
+                        options.UseSqlite($"Data Source={_dbPath}"));
+
+                    // 3️⃣ Créer et seed la base
+                    var sp = services.BuildServiceProvider();
+                    using var scope = sp.CreateScope();
                     var db = scope.ServiceProvider.GetRequiredService<PortfolioDbContext>();
+                    db.Database.EnsureDeleted();
                     db.Database.EnsureCreated();
 
-                    // Reset DB
-                    db.Users.RemoveRange(db.Users);
-                    db.SaveChanges();
-
-                    // Seed user
                     db.Users.Add(new User
                     {
-                        Id = Guid.NewGuid(),
+                        Id = seededUserId,
                         Name = "Alice Dupont"
                     });
                     db.SaveChanges();
                 });
             }).CreateClient();
+
+            _userId = seededUserId;
         }
 
         [Fact]
@@ -64,10 +77,7 @@ namespace Portfolio.Test.IntegrationTests
         [Fact]
         public async Task GetUserById_ExistingId_ShouldReturnOk()
         {
-            // On prend l'ID seedé
-            var userId = _db.Users.First().Id;
-
-            var response = await _client.GetAsync($"/api/users/{userId}");
+            var response = await _client.GetAsync($"/api/users/{_userId}");
 
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
