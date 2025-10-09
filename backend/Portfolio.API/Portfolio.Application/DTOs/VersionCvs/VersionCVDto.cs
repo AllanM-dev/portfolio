@@ -9,7 +9,7 @@ namespace Portfolio.Application.DTOs.VersionCvs
     public class VersionCVDto
     {
         public int Id { get; set; }
-        public string Name { get; set; } = "";
+        public string Name { get; set; } = String.Empty;
         public Guid UserId { get; set; }
     }
 }

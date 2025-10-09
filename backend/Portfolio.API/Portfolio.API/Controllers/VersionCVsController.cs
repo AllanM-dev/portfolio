@@ -14,10 +14,11 @@ namespace Portfolio.API.Controllers
         private readonly GetVersionsByUser _getVersionsByUser;
         private readonly GetVersionCVById _getVersionById;
 
-        public VersionCVsController(AddVersionCV addVersionCV, GetVersionsByUser getVersionsByUser)
+        public VersionCVsController(AddVersionCV addVersionCV, GetVersionsByUser getVersionsByUser, GetVersionCVById getVersionById)
         {
             _addVersionCV = addVersionCV;
             _getVersionsByUser = getVersionsByUser;
+            _getVersionById = getVersionById;
         }
 
         [HttpGet("user/{userId}")]
@@ -36,7 +37,7 @@ namespace Portfolio.API.Controllers
                 return BadRequest(ModelState);
             var createdVersion = dto.ToEntity();
             _addVersionCV.Execute(createdVersion);
-            return CreatedAtAction(nameof(GetById), new { userId = createdVersion.UserId }, createdVersion.ToDto());
+            return CreatedAtAction(nameof(GetById), new { id = createdVersion.Id }, createdVersion.ToDto());
         }
 
         [HttpGet("{id}")]
